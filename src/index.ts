@@ -1,10 +1,10 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { Hono, type Context } from 'hono'
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
+app.get('/', (c:Context) => {
+  return c.json({message: "server is running on port 3000"})
 })
 
 serve({
