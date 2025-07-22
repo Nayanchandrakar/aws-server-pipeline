@@ -4,7 +4,7 @@ import { Hono, type Context } from 'hono'
 const app = new Hono()
 
 app.get('/', (c:Context) => {
-  return c.json({message: "server is running on port 3000"})
+  return c.json({message: "Message updated man"})
 })
 
 serve({
