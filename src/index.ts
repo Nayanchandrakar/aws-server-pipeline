@@ -4,7 +4,7 @@ import { Hono, type Context } from 'hono'
 const app = new Hono()
 
 app.get('/', (c:Context) => {
-  return c.json({message: "Message updated man"})
+  return c.json({message: "Hello world api version v2"})
 })
 
 serve({
