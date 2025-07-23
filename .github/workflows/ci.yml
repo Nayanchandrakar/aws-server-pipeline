@@ -2,7 +2,8 @@ name: CI pipeline
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
@@ -26,6 +27,7 @@ jobs:
           mask-password: 'true'
 
       - name: Build, tag, and push docker image to Amazon ECR
+        id: docker-image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: pipeline
@@ -33,3 +35,19 @@ jobs:
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Amazon ECS Render Task Definition Action for GitHub Actions
+        id: create-task
+        uses: aws-actions/amazon-ecs-render-task-definition@v1.7.4
+         with:
+          task-definition: .aws/task-definition.json
+          container-name: node-container
+          image: ${{steps.docker-image.outputs.image}}
+
+      - name: Amazon ECS "Deploy Task Definition" Action for GitHub Actions
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2.3.3
+        with:
+          task-definition: ${{steps.create-task.outputs.task-definition}}
+          service: pipeline-task-service-563uo5vx
+          cluster: hospitable-turtle-h91cyn
+          wait-for-service-stabilit: true
