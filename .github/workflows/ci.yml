@@ -39,7 +39,7 @@ jobs:
       - name: Amazon ECS Render Task Definition Action for GitHub Actions
         id: create-task
         uses: aws-actions/amazon-ecs-render-task-definition@v1.7.4
-         with:
+        with:
           task-definition: .aws/task-definition.json
           container-name: node-container
           image: ${{steps.docker-image.outputs.image}}
