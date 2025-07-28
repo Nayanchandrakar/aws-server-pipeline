@@ -16,6 +16,6 @@
     "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "drizzle.config.reset.ts"],
   "exclude": ["node_modules", "dist"]
 } 
